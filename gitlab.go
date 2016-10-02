@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 )
 
 const (
@@ -39,7 +40,10 @@ func NewGitlab(baseUrl, apiPath, token string) *Gitlab {
 		Proxy:           http.ProxyFromEnvironment,
 		TLSClientConfig: config,
 	}
-	client := &http.Client{Transport: tr}
+	client := &http.Client{
+		Transport: tr,
+		Timeout: time.Duration(10) * time.Second,
+	}
 
 	return &Gitlab{
 		BaseUrl: baseUrl,
